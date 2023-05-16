@@ -8,12 +8,15 @@ import {
 } from "react-native";
 import { bookedShifts, fetchShifts } from "../maintenance/shiftFetch";
 import { useEffect, useState } from "react";
+import { calculateDateMatching } from "../maintenance/dateCalculating";
+import Button from "../components/Button";
 
 const MyShifts = () => {
   const [shifts, setShifts] = useState([]);
   useEffect(() => {
     bookedShifts(setShifts);
   }, []);
+  calculateDateMatching()
   return (
     <View style={styles.shiftsContainer}>
       <StatusBar style="dark" />
@@ -38,9 +41,7 @@ const MyShifts = () => {
                         <Text style={styles.shiftTime}>{item.startTime}-{item.endTime}</Text>
                         <Text style={styles.shiftCity}>{item.city}</Text>
                       </View>
-                      <TouchableOpacity style={styles.shiftButton}>
-                        <Text style={styles.shiftButtonText}>Cancel</Text>
-                      </TouchableOpacity>
+                      <Button shift={item} text="Cancel"/>
                     </View>
                   );
                 }}
