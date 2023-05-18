@@ -16,40 +16,48 @@ const MyShifts = () => {
   useEffect(() => {
     bookedShifts(setShifts);
   }, []);
-  calculateDateMatching()
+  calculateDateMatching();
   return (
     <View style={styles.shiftsContainer}>
       <StatusBar style="dark" />
-      <FlatList
-        style={styles.fullSizeView}
-        data={shifts}
-        renderItem={({ item }) => {
-          return (
-            <View>
-              <View style={styles.dayHeader}>
-                <Text style={styles.dayTitle}>{item.displayDate}</Text>
-                <Text style={styles.shiftText}>
-                  {item.shifts.length} {item.shifts.length > 1 ? "shifts" : "shift"}, {item.dailyShiftsLength} hours
-                </Text>
-              </View>
-              <FlatList
-                data={item.shifts}
-                renderItem={({ item }) => {
-                  return (
-                    <View style={styles.singleShiftView}>
-                      <View>
-                        <Text style={styles.shiftTime}>{item.startTime}-{item.endTime}</Text>
-                        <Text style={styles.shiftCity}>{item.city}</Text>
+      {shifts.length ? (
+        <FlatList
+          style={styles.fullSizeView}
+          data={shifts}
+          renderItem={({ item }) => {
+            return (
+              <View>
+                <View style={styles.dayHeader}>
+                  <Text style={styles.dayTitle}>{item.displayDate}</Text>
+                  <Text style={styles.shiftText}>
+                    {item.shifts.length}{" "}
+                    {item.shifts.length > 1 ? "shifts" : "shift"},{" "}
+                    {item.dailyShiftsLength} hours
+                  </Text>
+                </View>
+                <FlatList
+                  data={item.shifts}
+                  renderItem={({ item }) => {
+                    return (
+                      <View style={styles.singleShiftView}>
+                        <View>
+                          <Text style={styles.shiftTime}>
+                            {item.startTime}-{item.endTime}
+                          </Text>
+                          <Text style={styles.shiftCity}>{item.city}</Text>
+                        </View>
+                        <Button shift={item} text="Cancel" />
                       </View>
-                      <Button shift={item} text="Cancel"/>
-                    </View>
-                  );
-                }}
-              />
-            </View>
-          );
-        }}
-      />
+                    );
+                  }}
+                />
+              </View>
+            );
+          }}
+        />
+      ) : (
+        <Text style={styles.errorText}>You have no shifts in the future</Text>
+      )}
     </View>
   );
 };
@@ -99,22 +107,15 @@ const styles = StyleSheet.create({
     color: "#A4B8D3",
     fontWeight: "bold",
   },
-  shiftButton: {
-    padding: 12,
-    borderRadius: 25,
-    borderWidth: 1,
-    borderColor: "#adbbd9",
-  },
-  shiftButtonText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    textAlign: "center",
-    color: "#adbbd9",
-  },
   fullSizeView: {
     height: "100%",
     width: "100%",
   },
+  errorText: {
+    fontSize: 35,
+    color: "#4F6C92",
+    textAlign: "center"
+  }
 });
 
 export default MyShifts;

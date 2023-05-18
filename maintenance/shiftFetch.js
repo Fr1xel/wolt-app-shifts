@@ -1,39 +1,52 @@
-import { shiftsData } from "./dataBase"
+import { shiftsData } from "./dataBase";
 
 export const bookedShifts = (setState) => {
-  const allDates = createDateObject()
-  const filteredShifts = allDates.filter(shift => {
-      if(shift.booked) return shift
-  })
-  setState(sortByDay(filteredShifts));
-}
+  const allDates = createDateObject();
+  const allBookedShifts = allDates.filter((shift) => {
+    if (shift.booked) return shift;
+  });
+  const ongoingShifts = alreadyFinnishedShifts(allBookedShifts);
+  setState(sortByDay(ongoingShifts));
+};
+
+const alreadyFinnishedShifts = (shifts) => {
+  const timeNow = new Date().getTime();
+
+  return shifts.filter((shift) => {
+    if (shift.endTimeNumber - timeNow > 0) return shift;
+  });
+};
 
 const createDateObject = () => {
-  const allDates = shiftsData.sort((p1, p2) => (p1.startTime > p2.startTime) ? 1 : (p1.startTime < p2.startTime) ? -1 : 0).map((shift) => {
-    const date = new Date(shift.startTime);
-    const endDate = new Date(shift.endTime);
-    const shiftLength = (endDate - date) / (1000 * 60 * 60);
-    return {
-      date: date.toDateString(),
-      startTime: timeConverter(date.getHours(), date.getMinutes()),
-      dateNumber: date.getTime(),
-      endTime: timeConverter(endDate.getHours(), endDate.getMinutes()),
-      shiftLength: shiftLength,
-      displayDate: date.toDateString().split(" ").slice(1).join(" "),
-      city: shift.area,
-      booked: shift.booked,
-      startTimeNumber: shift.startTime,
-      endTimeNumber: shift.endTime
-    };
-  });
-  return allDates
-}
-
+  const allDates = shiftsData
+    .sort((p1, p2) =>
+      p1.startTime > p2.startTime ? 1 : p1.startTime < p2.startTime ? -1 : 0
+    )
+    .map((shift) => {
+      const date = new Date(shift.startTime);
+      const endDate = new Date(shift.endTime);
+      const shiftLength = (endDate - date) / (1000 * 60 * 60);
+      return {
+        date: date.toDateString(),
+        startTime: timeConverter(date.getHours(), date.getMinutes()),
+        dateNumber: date.getTime(),
+        endTime: timeConverter(endDate.getHours(), endDate.getMinutes()),
+        shiftLength: shiftLength,
+        displayDate: date.toDateString().split(" ").slice(1).join(" "),
+        city: shift.area,
+        booked: shift.booked,
+        startTimeNumber: shift.startTime,
+        endTimeNumber: shift.endTime,
+      };
+    });
+  return allDates;
+};
 
 export const fetchShifts = (setState) => {
   setTimeout(() => {
-    const allDates = createDateObject()
-    setState(sortByDay(allDates));
+    const allDates = createDateObject();
+    const filteredDates = alreadyFinnishedShifts(allDates);
+    setState(sortByDay(filteredDates));
   }, 500);
 };
 
@@ -58,7 +71,7 @@ const sortByDay = (shifts) => {
       const day = {
         shifts: [shift],
         dailyShiftsLength: shift.shiftLength,
-        displayDate: shift.displayDate
+        displayDate: shift.displayDate,
       };
       shifts.slice(index + 1).forEach((checkShift) => {
         if (shift.date === checkShift.date) {
