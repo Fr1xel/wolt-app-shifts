@@ -1,7 +1,7 @@
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 import { calculateDateMatching } from "../maintenance/dateCalculating";
 
-const Button = ({ type, text, shift }) => {
+const Button = ({ type, text, shift, onPress }) => {
   const buttonDisabled = calculateDateMatching(
     shift.startTimeNumber,
     shift.endTimeNumber
@@ -15,7 +15,7 @@ const Button = ({ type, text, shift }) => {
     : styles.activeButtonText;
 
   return (
-    <TouchableOpacity style={buttonStyle} disabled={buttonDisabled}>
+    <TouchableOpacity style={buttonStyle} disabled={buttonDisabled} onPress={onPress}>
       <Text style={textStyle}>{text}</Text>
     </TouchableOpacity>
   );

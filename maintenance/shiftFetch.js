@@ -37,6 +37,7 @@ const createDateObject = () => {
         booked: shift.booked,
         startTimeNumber: shift.startTime,
         endTimeNumber: shift.endTime,
+        id: shift.id
       };
     });
   return allDates;

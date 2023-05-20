@@ -8,7 +8,10 @@ import {
 } from "react-native";
 import { bookedShifts, fetchShifts } from "../maintenance/shiftFetch";
 import { useEffect, useState } from "react";
-import { calculateDateMatching } from "../maintenance/dateCalculating";
+import {
+  calculateDateMatching,
+  updateState,
+} from "../maintenance/dateCalculating";
 import Button from "../components/Button";
 
 const MyShifts = () => {
@@ -30,14 +33,14 @@ const MyShifts = () => {
                 <View style={styles.dayHeader}>
                   <Text style={styles.dayTitle}>{item.displayDate}</Text>
                   <Text style={styles.shiftText}>
-                    {item.shifts.length}{" "}
-                    {item.shifts.length > 1 ? "shifts" : "shift"},{" "}
+                    {item.shifts?.length}{" "}
+                    {item.shifts?.length > 1 ? "shifts" : "shift"},{" "}
                     {item.dailyShiftsLength} hours
                   </Text>
                 </View>
                 <FlatList
                   data={item.shifts}
-                  renderItem={({ item }) => {
+                  renderItem={({ item, index }) => {
                     return (
                       <View style={styles.singleShiftView}>
                         <View>
@@ -46,7 +49,11 @@ const MyShifts = () => {
                           </Text>
                           <Text style={styles.shiftCity}>{item.city}</Text>
                         </View>
-                        <Button shift={item} text="Cancel" />
+                        <Button
+                          shift={item}
+                          text="Cancel"
+                          onPress={() => updateState(shifts, setShifts, item)}
+                        />
                       </View>
                     );
                   }}
@@ -114,8 +121,8 @@ const styles = StyleSheet.create({
   errorText: {
     fontSize: 35,
     color: "#4F6C92",
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });
 
 export default MyShifts;
