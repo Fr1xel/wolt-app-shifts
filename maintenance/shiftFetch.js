@@ -44,11 +44,16 @@ const createDateObject = () => {
 };
 
 export const fetchShifts = (setState) => {
-  setTimeout(() => {
-    const allDates = createDateObject();
-    const filteredDates = alreadyFinnishedShifts(allDates);
-    setState(sortByDay(filteredDates));
-  }, 500);
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const allDates = createDateObject();
+      const filteredDates = alreadyFinnishedShifts(allDates);
+      if(setState){
+        resolve(setState(sortByDay(filteredDates)));
+      }
+      else resolve(filteredDates);
+    }, 500);
+  })
 };
 
 const timeConverter = (hours, minutes) => {
