@@ -1,3 +1,5 @@
+import { shiftsData } from "./dataBase";
+
 export const calculateDateMatching = (shiftStart, shiftEnd) => {
   const myDate = new Date().getTime();
   const currentlyInShift = myDate - shiftStart > 0 && myDate - shiftEnd < 0;
@@ -22,5 +24,14 @@ export const updateState = (state, setState, item) => {
     });
     if (day.shifts.length > 0) return day;
   });
+  updateDataBase(item.id)
   setState(allBookedShifts);
 };
+
+const updateDataBase = (id) => {
+   shiftsData.forEach((shift) => {
+    if(shift.id === id){
+        shift.booked = false
+    }
+   })
+ }
