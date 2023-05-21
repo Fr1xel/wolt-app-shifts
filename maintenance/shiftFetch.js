@@ -70,7 +70,7 @@ const checkIfShiftExists = (allShifts, shift) => {
   return includes;
 };
 
-const sortByDay = (shifts) => {
+export const sortByDay = (shifts) => {
   const sorted = [];
   shifts.forEach((shift, index) => {
     if (!checkIfShiftExists(sorted, shift)) {

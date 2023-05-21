@@ -1,4 +1,4 @@
-import { fetchShifts } from "./shiftFetch";
+import { fetchShifts, sortByDay } from "./shiftFetch";
 
 export const sortByCity = async (setState) => {
   return new Promise(async (resolve) => {
@@ -20,6 +20,9 @@ export const sortByCity = async (setState) => {
           });
         }
       });
+      arrOfCities.forEach(city => {
+        sortByDay(city.shifts)
+      })
       resolve(setState(arrOfCities));
     }
   });
