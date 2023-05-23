@@ -11,7 +11,7 @@ const CityTopBar = ({ cities, activeIndex, setActiveIndex }) => {
   return (
     <View style={styles.topBarWrapper}>
       <FlatList
-        columnWrapperStyle={{ justifyContent: "space-around" }}
+        columnWrapperStyle={cities.length > 1 && { justifyContent: "space-around" }}
         numColumns={cities.length}
         data={cities}
         renderItem={({ item, index }) => {
@@ -41,6 +41,9 @@ const styles = StyleSheet.create({
     marginTop: 40,
     borderBottomWidth: 1,
     borderColor: "#4f6c92",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center"
   },
   topBarTextInactive: {
     fontSize: 18,

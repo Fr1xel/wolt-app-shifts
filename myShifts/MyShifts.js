@@ -26,7 +26,7 @@ const MyShifts = () => {
     <View style={shiftStyles.shiftsContainer}>
       <StatusBar style="dark" />
       {shifts.length ? (
-        <ShiftListing shifts={shifts}/>
+        <ShiftListing shifts={shifts} setShifts={setShifts}/>
       ) : (
         <Text style={shiftStyles.errorText}>You have no shifts in the future</Text>
       )}

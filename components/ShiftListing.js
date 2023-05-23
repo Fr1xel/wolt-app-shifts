@@ -1,8 +1,9 @@
 import { shiftStyles } from "../styles/shiftListingStyles";
 import { View, Text, FlatList } from "react-native";
+import { updateState } from "../maintenance/dateCalculating";
 import Button from "./Button";
 
-const ShiftListing = ({ shifts }) => {
+const ShiftListing = ({ shifts, setShifts }) => {
   return (
     <FlatList
       style={shiftStyles.fullSizeView}

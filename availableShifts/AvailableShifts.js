@@ -20,8 +20,7 @@ const AvailableShifts = () => {
       <View>
         <ShiftListing
           shifts={shiftsByCity[activeIndex].shifts}
-          activeIndex={activeIndex}
-          setActiveIndex={setActiveIndex}
+          setShifts={setShiftsByCity}
         />
       </View>
     </View>
