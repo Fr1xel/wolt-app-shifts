@@ -21,7 +21,7 @@ export const sortByCity = async (setState) => {
         }
       });
       arrOfCities.forEach(city => {
-        sortByDay(city.shifts)
+        city.shifts = sortByDay(city.shifts)
       })
       resolve(setState(arrOfCities));
     }

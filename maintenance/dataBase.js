@@ -30,7 +30,7 @@ export const shiftsData = [
     {
       id: "301e40e5-05dc-4b9d-bdc5-cae63f651970",
       booked: true,
-      area: "TTravnik",
+      area: "Travnik",
       startTime: 1684850400000,
       endTime: 1684854000000,
     },
