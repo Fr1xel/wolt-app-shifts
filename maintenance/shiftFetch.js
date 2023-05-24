@@ -65,7 +65,7 @@ const timeConverter = (hours, minutes) => {
 const checkIfShiftExists = (allShifts, shift) => {
   let includes = false;
   allShifts.forEach((arr) => {
-    if (arr.shifts.includes(shift)) includes = true;
+    if (arr.data.includes(shift)) includes = true;
   });
   return includes;
 };
@@ -75,14 +75,18 @@ export const sortByDay = (shifts) => {
   shifts.forEach((shift, index) => {
     if (!checkIfShiftExists(sorted, shift)) {
       const day = {
-        shifts: [shift],
-        dailyShiftsLength: shift.shiftLength,
-        displayDate: shift.displayDate,
+        data: [shift],
+        title: {
+          dailyShiftsLength: shift.shiftLength,
+          displayDate: shift.displayDate,
+          numOfShifts: 1
+        }
       };
       shifts.slice(index + 1).forEach((checkShift) => {
         if (shift.date === checkShift.date) {
-          day.shifts.push(checkShift);
-          day.dailyShiftsLength += shift.shiftLength;
+          day.data.push(checkShift);
+          day.title.dailyShiftsLength += shift.shiftLength;
+          day.numOfShifts += 1
         }
       });
       sorted.push(day);

@@ -1,47 +1,51 @@
 import { shiftStyles } from "../styles/shiftListingStyles";
-import { View, Text, FlatList } from "react-native";
-import { updateState } from "../maintenance/dateCalculating";
+import { View, Text, FlatList, SectionList } from "react-native";
+import {
+  UpdateCityState,
+  calculateDailyShifts,
+  updateState,
+} from "../maintenance/dateCalculating";
 import Button from "./Button";
 
-const ShiftListing = ({ shifts, setShifts }) => {
+const ShiftListing = ({ shifts, setShifts, cityShifts }) => {
+  const updateStateFunction = cityShifts
+    ? UpdateCityState
+    : calculateDailyShifts;
   return (
-    <FlatList
+    <SectionList
       style={shiftStyles.fullSizeView}
-      data={shifts}
-      renderItem={({ item }) => {
-        return (
+      sections={shifts}
+      keyExtractor={(item, index) => item.displayDate + index}
+      renderSectionHeader={({ section: { title } }) => (
+        <View style={shiftStyles.dayHeader}>
+          <Text style={shiftStyles.dayTitle}>{title.displayDate}</Text>
+          <Text style={shiftStyles.shiftText}>
+            {title.numOfShifts} {title.numOfShifts > 1 ? "shifts" : "shift"},{" "}
+            {title.dailyShiftsLength} hours
+          </Text>
+        </View>
+      )}
+      renderItem={({ item }) => (
+        <View style={shiftStyles.singleShiftView}>
           <View>
-            <View style={shiftStyles.dayHeader}>
-              <Text style={shiftStyles.dayTitle}>{item.displayDate}</Text>
-              <Text style={shiftStyles.shiftText}>
-                {item.shifts?.length}{" "}
-                {item.shifts?.length > 1 ? "shifts" : "shift"},{" "}
-                {item.dailyShiftsLength} hours
-              </Text>
-            </View>
-            <FlatList
-              data={item.shifts}
-              renderItem={({ item, index }) => {
-                return (
-                  <View style={shiftStyles.singleShiftView}>
-                    <View>
-                      <Text style={shiftStyles.shiftTime}>
-                        {item.startTime}-{item.endTime}
-                      </Text>
-                      <Text style={shiftStyles.shiftCity}>{item.city}</Text>
-                    </View>
-                    <Button
-                      shift={item}
-                      text="Cancel"
-                      onPress={() => updateState(shifts, setShifts, item)}
-                    />
-                  </View>
-                );
-              }}
-            />
+            <Text style={shiftStyles.shiftTime}>
+              {item.startTime}-{item.endTime}
+            </Text>
+            <Text style={shiftStyles.shiftCity}>{item.city}</Text>
           </View>
-        );
-      }}
+          <Button
+            shift={item}
+            text="Cancel"
+            onPress={() =>
+              updateStateFunction(
+                cityShifts ? cityShifts : shifts,
+                setShifts,
+                item
+              )
+            }
+          />
+        </View>
+      )}
     />
   );
 };

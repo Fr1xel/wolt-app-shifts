@@ -9,19 +9,19 @@ export const sortByCity = async (setState) => {
         let doesCityExist = false;
         arrOfCities?.forEach((city) => {
           if (shift.city === city.cityName) {
-            city.shifts.push(shift);
+            city.data.push(shift);
             doesCityExist = true;
           }
         });
         if (!doesCityExist) {
           arrOfCities.push({
-            shifts: [shift],
+            data: [shift],
             cityName: shift.city,
           });
         }
       });
       arrOfCities.forEach(city => {
-        city.shifts = sortByDay(city.shifts)
+        city.data = sortByDay(city.data)
       })
       resolve(setState(arrOfCities));
     }

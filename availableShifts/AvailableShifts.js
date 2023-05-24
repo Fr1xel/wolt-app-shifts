@@ -9,7 +9,7 @@ const AvailableShifts = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   useEffect(() => {
     sortByCity(setShiftsByCity);
-  }, []);
+  }, [activeIndex]);
   return shiftsByCity.length > 0 ? (
     <View>
       <CityTopBar
@@ -19,7 +19,8 @@ const AvailableShifts = () => {
       />
       <View>
         <ShiftListing
-          shifts={shiftsByCity[activeIndex].shifts}
+          shifts={shiftsByCity[activeIndex].data}
+          cityShifts={shiftsByCity}
           setShifts={setShiftsByCity}
         />
       </View>

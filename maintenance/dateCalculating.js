@@ -6,11 +6,11 @@ export const calculateDateMatching = (shiftStart, shiftEnd) => {
   return currentlyInShift;
 };
 
-export const updateState = (state, setState, item) => {
+export const calculateDailyShifts = (state, setState, item) => {
   const unBook = state.map((day) => {
     return {
       ...day,
-      dailyShifts: day.shifts.map((shift) => {
+      data: day.data.map((shift) => {
         if (shift.id === item.id) {
           shift.booked = false;
           return shift;
@@ -19,19 +19,32 @@ export const updateState = (state, setState, item) => {
     };
   });
   const allBookedShifts = unBook.filter((day) => {
-    day.shifts = day.shifts.filter((shift) => {
+    day.data = day.data.filter((shift) => {
       if (shift.booked) return shift;
     });
-    if (day.shifts.length > 0) return day;
+    if (day.data.length > 0) return day;
   });
-  updateDataBase(item.id)
-  setState(allBookedShifts);
+  updateDataBase(item.id);
+  if (!setState) {
+    return allBookedShifts;
+  } else {
+    setState(allBookedShifts);
+  }
+};
+
+export const UpdateCityState = (state, setState, item) => {
+  const filteredCityStates = state.filter((city) => {
+    city.data = calculateDailyShifts(city.data,undefined, item);
+    if(city.data.length > 0) return city
+  });
+  console.log("this is the old state", state, " and how the fuck did you get here", filteredCityStates)
+  setState(filteredCityStates);
 };
 
 const updateDataBase = (id) => {
-   shiftsData.forEach((shift) => {
-    if(shift.id === id){
-        shift.booked = false
+  shiftsData.forEach((shift) => {
+    if (shift.id === id) {
+      shift.booked = false;
     }
-   })
- }
+  });
+};
