@@ -85,8 +85,8 @@ export const sortByDay = (shifts) => {
       shifts.slice(index + 1).forEach((checkShift) => {
         if (shift.date === checkShift.date) {
           day.data.push(checkShift);
-          day.title.dailyShiftsLength += shift.shiftLength;
-          day.numOfShifts += 1
+          day.title.dailyShiftsLength += checkShift.shiftLength;
+          day.title.numOfShifts += 1
         }
       });
       sorted.push(day);

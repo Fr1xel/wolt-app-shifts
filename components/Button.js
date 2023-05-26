@@ -6,7 +6,7 @@ const Button = ({ type, text, shift, onPress }) => {
     shift.startTimeNumber,
     shift.endTimeNumber
   );
-
+  
   const buttonStyle = buttonDisabled
     ? styles.disabledButton
     : styles.activeButton;

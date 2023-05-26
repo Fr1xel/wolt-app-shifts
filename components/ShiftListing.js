@@ -16,15 +16,17 @@ const ShiftListing = ({ shifts, setShifts, cityShifts }) => {
       style={shiftStyles.fullSizeView}
       sections={shifts}
       keyExtractor={(item, index) => item.displayDate + index}
-      renderSectionHeader={({ section: { title } }) => (
-        <View style={shiftStyles.dayHeader}>
-          <Text style={shiftStyles.dayTitle}>{title.displayDate}</Text>
-          <Text style={shiftStyles.shiftText}>
-            {title.numOfShifts} {title.numOfShifts > 1 ? "shifts" : "shift"},{" "}
-            {title.dailyShiftsLength} hours
-          </Text>
-        </View>
-      )}
+      renderSectionHeader={({ section: { title } }) => {
+        return (
+          <View style={shiftStyles.dayHeader}>
+            <Text style={shiftStyles.dayTitle}>{title.displayDate}</Text>
+            <Text style={shiftStyles.shiftText}>
+              {title.numOfShifts} {title.numOfShifts > 1 ? "shifts" : "shift"},{" "}
+              {title.dailyShiftsLength} hours
+            </Text>
+          </View>
+        );
+      }}
       renderItem={({ item }) => (
         <View style={shiftStyles.singleShiftView}>
           <View>
@@ -35,7 +37,7 @@ const ShiftListing = ({ shifts, setShifts, cityShifts }) => {
           </View>
           <Button
             shift={item}
-            text="Cancel"
+            text={item.booked ? "Cancel" : "Book"}
             onPress={() =>
               updateStateFunction(
                 cityShifts ? cityShifts : shifts,

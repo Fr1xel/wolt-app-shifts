@@ -1,34 +1,28 @@
 import { StatusBar } from "expo-status-bar";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-} from "react-native";
+import { View, Text } from "react-native";
 import { bookedShifts, fetchShifts } from "../maintenance/shiftFetch";
-import { useEffect, useState } from "react";
-import {
-  calculateDateMatching,
-  updateState,
-} from "../maintenance/dateCalculating";
-import Button from "../components/Button";
+import { useState } from "react";
 import { shiftStyles } from "../styles/shiftListingStyles";
 import ShiftListing from "../components/ShiftListing";
+import { useFocusEffect } from "@react-navigation/native";
+import React from "react";
 
 const MyShifts = () => {
   const [shifts, setShifts] = useState([]);
-  useEffect(() => {
-    bookedShifts(setShifts);
-  }, []);
-  calculateDateMatching();
+  useFocusEffect(
+    React.useCallback(() => {
+      bookedShifts(setShifts);
+    }, [])
+  );
   return (
     <View style={shiftStyles.shiftsContainer}>
       <StatusBar style="dark" />
       {shifts.length ? (
-        <ShiftListing shifts={shifts} setShifts={setShifts}/>
+        <ShiftListing shifts={shifts} setShifts={setShifts} />
       ) : (
-        <Text style={shiftStyles.errorText}>You have no shifts in the future</Text>
+        <Text style={shiftStyles.errorText}>
+          You have no shifts in the future
+        </Text>
       )}
     </View>
   );
