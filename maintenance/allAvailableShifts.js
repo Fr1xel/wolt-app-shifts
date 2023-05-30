@@ -27,3 +27,10 @@ export const sortByCity = async (setState) => {
     }
   });
 };
+
+export const overlappingShifts = (shift, lastShift) => {
+  if(shift.startDate < lastShift?.endDate || shift.startDate < lastShift?.endDate){
+    return true
+  }
+  return false
+}

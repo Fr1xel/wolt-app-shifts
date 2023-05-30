@@ -3,12 +3,11 @@ import { View, Text, FlatList, SectionList } from "react-native";
 import {
   UpdateCityState,
   calculateDailyShifts,
-  updateState,
 } from "../maintenance/dateCalculating";
 import Button from "./Button";
 
 const ShiftListing = ({ shifts, setShifts, cityShifts }) => {
-  const updateStateFunction = cityShifts
+  let updateStateFunction = cityShifts
     ? UpdateCityState
     : calculateDailyShifts;
   return (
@@ -27,27 +26,30 @@ const ShiftListing = ({ shifts, setShifts, cityShifts }) => {
           </View>
         );
       }}
-      renderItem={({ item }) => (
-        <View style={shiftStyles.singleShiftView}>
-          <View>
-            <Text style={shiftStyles.shiftTime}>
-              {item.startTime}-{item.endTime}
-            </Text>
-            <Text style={shiftStyles.shiftCity}>{item.city}</Text>
+      renderItem={({ item, index }) => {
+        return (
+          <View style={shiftStyles.singleShiftView}>
+            <View>
+              <Text style={shiftStyles.shiftTime}>
+                {item.startTime}-{item.endTime}
+              </Text>
+              <Text style={shiftStyles.shiftCity}>{item.city}</Text>
+            </View>
+            <Button
+              lastShift={cityShifts ? cityShifts[index - 1] : item}
+              shift={item}
+              text={item.booked ? "Cancel" : "Book"}
+              onPress={() =>
+                updateStateFunction(
+                  cityShifts ? cityShifts : shifts,
+                  setShifts,
+                  item
+                )
+              }
+            />
           </View>
-          <Button
-            shift={item}
-            text={item.booked ? "Cancel" : "Book"}
-            onPress={() =>
-              updateStateFunction(
-                cityShifts ? cityShifts : shifts,
-                setShifts,
-                item
-              )
-            }
-          />
-        </View>
-      )}
+        );
+      }}
     />
   );
 };
